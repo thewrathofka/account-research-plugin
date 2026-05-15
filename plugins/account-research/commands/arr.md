@@ -1,7 +1,7 @@
 ---
 description: Run the 11-module account research pipeline against the Notion All Accounts CRM. Orchestrates per-module skills via parallel subagents. On-demand only — no schedule, no cron.
 argument-hint: [<account name> | --batch] [--rep NAME] [--priority NAME] [--max N] [--since N] [--dry-run] [--label TAG]
-allowed-tools: Agent, Skill, WebSearch, WebFetch, Bash, mcp__claude_ai_Notion__notion-search, mcp__claude_ai_Notion__notion-fetch, mcp__claude_ai_Notion__notion-update-page, mcp__claude_ai_Notion__notion-create-pages, mcp__claude_ai_Notion__notion-create-comment
+allowed-tools: Agent, Skill, WebSearch, WebFetch, Bash, mcp__claude_ai_Notion__notion-search, mcp__claude_ai_Notion__notion-fetch, mcp__claude_ai_Notion__notion-query-database-view, mcp__claude_ai_Notion__notion-update-page, mcp__claude_ai_Notion__notion-create-pages, mcp__claude_ai_Notion__notion-create-comment
 ---
 
 # /arr — Account Research Agent (orchestrator)
@@ -33,23 +33,54 @@ If neither mode is given, ask once which the user wants.
 
 ---
 
-## Step 1 — Resolve account list (Notion MCP)
+## Step 1 — Resolve account list
 
 - **All Accounts DB:** `6d510b5a-9c8f-490f-8600-429184341edc`
 - **Money Moguls CRM parent page:** `3523435e-7148-8111-b9be-df6e2c5844b9`
-- **Canonical batch view (recommended):** "Unresearched Priority B" — a Notion view
-  with filter `Rep=<rep> + Priority Type=<priority> + Last Researched is empty`,
-  sorted by `Account Name ASC`. The MCP `notion-query-database-view` tool caps
-  results at 100 with no cursor passthrough, so a pre-filtered view is the only
-  way batch mode reliably surfaces accounts beyond position 100.
 
-For batch mode, prefer `notion-query-database-view` against the canonical view URL.
-If no such view exists yet, fall back to `notion-fetch` against the DB ID with
-filter on Rep + Priority Type + `Last Researched is empty`, sorted ascending —
-still capped at 100, but covers most cases.
+### For batch mode — use `arr-batch-lister` (paginated, no 100-result cap)
 
-Apply `--since` and `--max` caps.
+Invoke the **`arr-batch-lister`** skill via its bundled bash script. It calls
+the Notion REST API with full cursor pagination — bypasses the
+`notion-query-database-view` MCP tool's 100-result cap. Required whenever the
+unresearched count may exceed 100.
 
+```
+bash ${CLAUDE_PLUGIN_ROOT}/skills/arr-batch-lister/list.sh \
+  "<rep>" "<priority_type>" "<unresearched_only>" "[max]" "[since_days]"
+```
+
+Default invocation when no overrides are given:
+```
+bash ${CLAUDE_PLUGIN_ROOT}/skills/arr-batch-lister/list.sh \
+  "Katarina" "Priority B" "true"
+```
+
+The script returns JSON `{"count": N, "results": [{page_id, account_name, last_researched, url}, ...]}`.
+Use `results[*].page_id` and `results[*].account_name` as per-account loop inputs.
+
+**One-time prerequisite (do once at install):** share the All Accounts DB
+with the "Claude Code" Notion integration. In Notion UI: open the All Accounts
+database → `⋯` menu → **Connections** → search "Claude Code" → **Add**. Until
+this is done, the script returns a 404 error.
+
+### Fallback when batch-lister 404s
+
+If `arr-batch-lister` returns a 404 (integration not shared yet), fall back to
+`notion-query-database-view` against the "Unresearched Priority B" view. The
+view must be pre-created in Notion with filter
+`Rep + Priority Type + Last Researched is empty`. Capped at 100 but viable for
+small batches. Print a one-line setup reminder to the user:
+> "Tip: share the All Accounts DB with the Claude Code Notion integration
+> (Notion UI → All Accounts → Connections → Add Claude Code) so future batches
+> can paginate the full account set."
+
+### For single-account mode
+
+Use `notion-search` with the account name string, or — if the user passed a
+Notion URL — use `notion-fetch` directly on the page ID. No pagination needed.
+
+Apply `--since` and `--max` caps on the resolved list before per-account loop.
 Cache the page IDs in working memory — every module needs them later.
 
 ---

@@ -16,26 +16,28 @@ Output contract is byte-for-byte aligned with the Python `account-research-agent
 
 ### One-time setup
 
-```bash
-# 1. Clone or already have the repo at ~/code/account-research-plugin/
-cd ~/code/account-research-plugin
+Install via the local marketplace (from inside Claude Code):
 
-# 2. Symlink into Claude Code's user-scope plugin directory
-ln -s ~/code/account-research-plugin ~/.claude/plugins/account-research
-
-# 3. Verify Claude Code sees it
-# Open Claude Code, run /plugin list — you should see "account-research" listed.
+```
+/plugin marketplace add ~/code/account-research-plugin
+/plugin install account-research@account-research-local
 ```
 
-Alternative: `/plugin install ~/code/account-research-plugin` from inside Claude Code.
+Then `/plugin list` to verify.
 
-### Required setup in Notion
+### Required setup in Notion (one-time, ~30 seconds)
 
-Create a permanent view in the All Accounts database (DB ID `6d510b5a-9c8f-490f-8600-429184341edc`) named **"Unresearched Priority B"** with:
-- Filter: `Rep is <your name>` AND `Priority Type is Priority B` AND `Last Researched is empty`
-- Sort: `Account Name` ASC
+**Share the All Accounts DB with the "Claude Code" Notion integration:**
 
-The `/arr` batch mode queries this view as its canonical source. Without it, batch mode falls back to the unfiltered DB query which is capped at 100 results by the MCP `notion-query-database-view` tool.
+In Notion UI: open the **All Accounts** database (DB ID `6d510b5a-9c8f-490f-8600-429184341edc`) → click the `⋯` menu → **Connections** → search for "**Claude Code**" → **Add**.
+
+This grants the plugin's `arr-batch-lister` skill (which uses Bash + curl + the Notion REST API directly) full cursor pagination against the database — solving the 100-result cap of the `notion-query-database-view` MCP tool. With this enabled, `/arr --batch` reliably surfaces any number of unresearched accounts, not just the first 100.
+
+**Fallback (optional):** if you skip the integration grant, the plugin falls back to `notion-query-database-view` against a pre-defined Notion view. To enable the fallback, create a view named **"Unresearched Priority B"** in the All Accounts DB with filter `Rep + Priority Type + Last Researched is empty`, sort by `Account Name` ASC. This works for batches ≤100 accounts.
+
+### Required env var
+
+`$NOTION_API_TOKEN` must be set in your shell (Kali's is in `~/.zshrc`). The plugin reads it for direct API pagination calls. The same token Claude Code's Notion MCP uses.
 
 ---
 
@@ -67,12 +69,16 @@ Default filters: `--rep Katarina`, `--priority "Priority A"`, `--since 30` (days
       │
       ▼
 ┌─────────────────────────────┐
-│  Orchestrator (this command) │  ← queries "Unresearched Priority B" Notion view
+│  Orchestrator (this command) │
 └─────────────────────────────┘
+      │
+      ├─► arr-batch-lister      (Bash + curl direct to Notion REST API; full cursor pagination)
+      │                         used in --batch mode to surface ALL unresearched accounts
+      │                         (no 100-result cap; falls back to MCP view query on 404)
       │
       │  per-account (sequential across accounts, parallel within)
       │
-      ├─► arr-disambiguator       (only for ambiguous names: Brunswick, CAI, Tide, …)
+      ├─► arr-disambiguator     (only for ambiguous names: Brunswick, CAI, Tide, …)
       │
       ├─► arr-module-01-gate      (GATE — EU/NA presence check; blocks if fail)
       │
@@ -102,24 +108,25 @@ Default filters: `--rep Katarina`, `--priority "Priority A"`, `--since 30` (days
 
 ## Tool-to-skill matrix
 
-| Skill | WebSearch | WebFetch | Notion search | Notion fetch | Notion write | notion-create-comment |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|
-| `/arr` (orchestrator) | | | ✓ | ✓ | ✓ | ✓ |
-| arr-disambiguator | ✓ | | | | | |
-| arr-module-01-gate | ✓ | ✓ | | | | |
-| arr-module-03-revenue | ✓ | ✓ | | | | |
-| arr-module-04-pain-points | (synthesis — no tools) | | | | | |
-| arr-module-05-corporate | ✓ | ✓ | | | | |
-| arr-module-06-structural-news | ✓ | ✓ | | | | |
-| arr-module-07-triggers | ✓ | ✓ | | | | |
-| arr-module-09-creative | ✓ | ✓ | | | | |
-| arr-module-10-ads | ✓ | ✓ | | | | |
-| arr-module-12-competitors | ✓ | ✓ | | | | |
-| arr-module-13-industry | ✓ | ✓ | | | | |
-| arr-module-14-hiring | ✓ | ✓ | | | | |
-| arr-page-assembly | (pure logic — no tools) | | | | | |
-| arr-writeback | | ✓ | | ✓ | ✓ | ✓ |
-| arr-format-verifier | | | | ✓ | | |
+| Skill | WebSearch | WebFetch | Bash | Notion search | Notion fetch | Notion write | notion-create-comment |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| `/arr` (orchestrator) | | | ✓ | ✓ | ✓ | ✓ | ✓ |
+| arr-batch-lister | | | ✓ | | | | |
+| arr-disambiguator | ✓ | | | | | | |
+| arr-module-01-gate | ✓ | ✓ | | | | | |
+| arr-module-03-revenue | ✓ | ✓ | | | | | |
+| arr-module-04-pain-points | (synthesis — no tools) | | | | | | |
+| arr-module-05-corporate | ✓ | ✓ | | | | | |
+| arr-module-06-structural-news | ✓ | ✓ | | | | | |
+| arr-module-07-triggers | ✓ | ✓ | | | | | |
+| arr-module-09-creative | ✓ | ✓ | | | | | |
+| arr-module-10-ads | ✓ | ✓ | | | | | |
+| arr-module-12-competitors | ✓ | ✓ | | | | | |
+| arr-module-13-industry | ✓ | ✓ | | | | | |
+| arr-module-14-hiring | ✓ | ✓ | | | | | |
+| arr-page-assembly | (pure logic — no tools) | | | | | | |
+| arr-writeback | | ✓ | | | ✓ | ✓ | ✓ |
+| arr-format-verifier | | | | | ✓ | | |
 
 ---
 
@@ -177,7 +184,7 @@ These are the failure modes observed across 100 batch runs in May 2026. Each is 
 | **E** | Stream idle timeout / partial response | Verifier catches it after the fact — partial writes still get repaired |
 | **F** | Child accounts flagged as duplicates | (Document in module 5; orchestrator decision tree) |
 | **G** | WebFetch denied silent fallback | Each module skill documents its fallback chain |
-| **H** | Pagination cap on Notion view query (100 results) | Canonical "Unresearched Priority B" view (set up at install) keeps the batch <100 |
+| **H** | Pagination cap on Notion view query (100 results) | `arr-batch-lister` skill — direct Notion REST API with cursor pagination via Bash + curl. No 100-result cap. (Fallback to view query if integration not yet granted access.) |
 | **I** | Disambiguation absent | `arr-disambiguator` skill + ambiguous-name watchlist in orchestrator |
 
 ---
@@ -239,7 +246,7 @@ When this plugin's spec disagrees with the Python project's `CLAUDE.md`, the Pyt
 
 1. **Stream idle timeouts.** Background subagents can stall after ~5 minutes when running many WebSearches in series. `arr-format-verifier` catches the resulting partial writes after the fact, but per-subagent budgeting (≤8 searches) is still important.
 2. **Laptop sleep kills in-flight subagents.** No way to fix from inside Claude Code. Verifier catches it on next-run resume.
-3. **MCP pagination.** The `notion-query-database-view` tool caps at 100 results with no cursor passthrough. The "Unresearched Priority B" view in Notion is the workaround.
+3. **MCP pagination.** The `notion-query-database-view` tool caps at 100 results with no cursor passthrough. ✅ **Resolved in v1.2.0** via the `arr-batch-lister` skill (Bash + curl + Notion REST API with cursor loop). The MCP path stays available as a fallback when the All Accounts DB hasn't been shared with the Claude Code integration yet.
 4. **WebFetch denied on /careers.** Many corporate careers pages (Workday/Greenhouse JS) block automation. Module 14's skill documents the fallback chain (LinkedIn Jobs → Glassdoor → Indeed).
 
 ---
@@ -250,6 +257,7 @@ When this plugin's spec disagrees with the Python project's `CLAUDE.md`, the Pyt
 |---|---|---|
 | 1.0.0 | 2026-05-13 | Initial scaffold (11 module skills + arr-page-assembly + arr-writeback) |
 | 1.1.0 | 2026-05-15 | Added `arr-format-verifier` + `arr-disambiguator` skills. Wired both into orchestrator. Explicit Prospecting Status forbid in arr-writeback. README + smoke test added. Plugin renamed `account-research-agent` → `account-research`. |
+| 1.2.0 | 2026-05-15 | Added `arr-batch-lister` skill with native Notion API cursor pagination (Bash + curl). No more 100-result cap on batch mode. Orchestrator updated to call batch-lister first, falls back to MCP view query on 404. README install instructions updated to recommend sharing the All Accounts DB with the Claude Code integration. |
 
 ---
 
