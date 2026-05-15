@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "account-research-local",
+  "description": "Personal marketplace hosting the account-research plugin. Single-plugin marketplace pointing at the local source-controlled plugin directory.",
+  "owner": {
+    "name": "Kali"
+  },
+  "plugins": [
+    {
+      "name": "account-research",
+      "description": "On-demand B2B account research for the Notion All Accounts CRM. 11-module pipeline (WebSearch + WebFetch + Notion MCP). Mirrors the output contract of the Python account-research-agent at ~/code/account-research-agent/. Fires only on /arr.",
+      "author": {
+        "name": "Kali"
+      },
+      "category": "sales",
+      "source": "./plugins/account-research",
+      "homepage": "https://github.com/kkmisovic/account-research-plugin"
+    }
+  ]
+}
