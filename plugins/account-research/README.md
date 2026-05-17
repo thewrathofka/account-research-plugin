@@ -1,6 +1,29 @@
 # account-research
 
-> Claude Code plugin — 11-module B2B account research pipeline for the Notion All Accounts CRM. Native Claude Code orchestration: slash command → parallel module subagents → unified writeback. Mirrors the output contract of the Python source-of-truth at `~/code/account-research-agent/`.
+> Claude Code plugin — 11-module B2B account research pipeline for the Notion All Accounts CRM. Native Claude Code orchestration: slash command → parallel module subagents → unified writeback. Mirrors the output contract of the Python source-of-truth at [`thewrathofka/account-research-agent`](https://github.com/thewrathofka/account-research-agent).
+
+---
+
+## 🔌 Notion connection note (read first)
+
+This plugin is currently wired to **Kali's personal Notion workspace** —
+the Notion MCP integration in Claude Code authenticates to her own account,
+and `/arr` reads/writes the All Accounts database `6d510b5a-9c8f-490f-8600-429184341edc`
+inside her own Money Moguls CRM page.
+
+**If/when Superside adopts this:** two things need to change:
+
+1. The Notion authentication in Claude Code's MCP config gets re-pointed
+   at Superside's Notion workspace (`/plugin` re-auth flow).
+2. The All Accounts DB ID referenced in `commands/arr.md` and the
+   `arr-batch-lister` skill switches from Kali's DB ID to Superside's.
+
+The Claude Code "Notion integration" needs to be granted access to whichever
+DB holds Superside's accounts (Notion UI → DB → `⋯` → Connections → Add).
+
+No skill-spec changes required — only the Notion auth + the DB ID constant.
+Everything else (the 11-module pipeline, writeback contract, alert behaviour)
+stays as-is.
 
 ---
 
