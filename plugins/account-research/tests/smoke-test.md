@@ -45,7 +45,7 @@ The orchestrator will:
 1. Skip disambiguator (Tableau isn't ambiguous).
 2. Run module 1 gate (Tableau passes — multinational presence).
 3. Fan out 9 module subagents in parallel.
-4. Run module 4 synthesis.
+4. Run module 3 synthesis.
 5. Assemble blocks via `arr-page-assembly`.
 6. Write via `arr-writeback`.
 7. **Verify via `arr-format-verifier`**.
@@ -106,7 +106,7 @@ Each criterion above maps to a failure mode observed in the May 2026 batch run (
 | 2 | B — Body format drift |
 | 3 | C — Wrote to Prospecting Status |
 | 4 | D — Parent/sister swap |
-| 5 | (Pain Point Tags presence — derived from module 4 v3.0 contract) |
+| 5 | (Pain Point Tags presence — derived from module 3 v3.0 contract) |
 | 6 | Source-of-truth drift (legacy spec said Buying Intent) |
 | 7 | A+B+C+D in aggregate — verifier is the catch-all |
 

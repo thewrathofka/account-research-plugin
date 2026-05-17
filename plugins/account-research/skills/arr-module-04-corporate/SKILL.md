@@ -1,10 +1,10 @@
 ---
-name: arr-module-05-corporate
-description: Module 5 of the Account Research Agent. Classifies the company as standalone / subsidiary / parent + PE ownership; populates the Parent and sister/child Notion text properties with the self-name rule applied. Loaded by per-account research subagents inside /arr.
+name: arr-module-04-corporate
+description: Module 4 of the Account Research Agent. Classifies the company as standalone / subsidiary / parent + PE ownership; populates the Parent and sister/child Notion text properties with the self-name rule applied. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 5 — Corporate Structure
+# Module 4 — Corporate Structure
 
 ## Purpose
 

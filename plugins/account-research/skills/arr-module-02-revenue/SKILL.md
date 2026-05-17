@@ -1,10 +1,10 @@
 ---
-name: arr-module-03-revenue
-description: Module 3 of the Account Research Agent. Researches how the company makes money — revenue model, primary customer segment, primary products — and produces the Overview paragraph text with [N] citation markers. Loaded by per-account research subagents inside /arr.
+name: arr-module-02-revenue
+description: Module 2 of the Account Research Agent. Researches how the company makes money — revenue model, primary customer segment, primary products — and produces the Overview paragraph text with [N] citation markers. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 3 — Revenue Model + Customers + Products
+# Module 2 — Revenue Model + Customers + Products
 
 ## Purpose
 
