@@ -1,10 +1,10 @@
 ---
-name: arr-module-06-structural-news
-description: Module 6 of the Account Research Agent. Surfaces last-6-month (or 12-month for big events) structural events — M&A, IPO, layoffs, bankruptcy — using a constrained vocabulary for the Structure Notes text property. Loaded by per-account research subagents inside /arr.
+name: arr-module-05-structural-news
+description: Module 5 of the Account Research Agent. Surfaces last-6-month (or 12-month for big events) structural events — M&A, IPO, layoffs, bankruptcy — using a constrained vocabulary for the Structure Notes text property. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 6 — Structural News
+# Module 5 — Structural News
 
 ## Purpose
 
@@ -14,7 +14,7 @@ Identify ONE significant structural event in the appropriate recency window (M&A
 
 - `account_name`
 - `today_date` — for recency cutoffs
-- Optional output from module 5 (helps confirm acquisition mechanics)
+- Optional output from module 4 (helps confirm acquisition mechanics)
 
 ## Searches to run
 

@@ -142,32 +142,32 @@ The 9 module ↔ skill mappings:
 
 | Module | Skill | What it returns |
 |---|---|---|
-| 3 | `arr-module-03-revenue` | Overview text + customer/product fields |
-| 5 | `arr-module-05-corporate` | `Parent` + `sister/child` values |
-| 6 | `arr-module-06-structural-news` | `Structure Notes` phrase (from constrained vocab) |
-| 7 | `arr-module-07-triggers` | `Buying Signals` additions + News context |
-| 9 | `arr-module-09-creative` | Creative Posture paragraph |
-| 10 | `arr-module-10-ads` | Per-platform Ads Running bullets |
-| 12 | `arr-module-12-competitors` | Top 3 competitors + differentiation |
-| 13 | `arr-module-13-industry` | 2–3 category stories + maybe `industry movement` |
-| 14 | `arr-module-14-hiring` | Headcount summary + `hiring`/`downsizing` signal |
+| 2 | `arr-module-02-revenue` | Overview text + customer/product fields |
+| 4 | `arr-module-04-corporate` | `Parent` + `sister/child` values |
+| 5 | `arr-module-05-structural-news` | `Structure Notes` phrase (from constrained vocab) |
+| 6 | `arr-module-06-triggers` | `Buying Signals` additions + News context |
+| 7 | `arr-module-07-creative` | Creative Posture paragraph |
+| 8 | `arr-module-08-ads` | Per-platform Ads Running bullets |
+| 9 | `arr-module-09-competitors` | Top 3 competitors + differentiation |
+| 10 | `arr-module-10-industry` | 2–3 category stories + maybe `industry movement` |
+| 11 | `arr-module-11-hiring` | Headcount summary + `hiring`/`downsizing` signal |
 
 Collect all 9 JSON outputs.
 
-### 2c. Synthesis (module 4, sequential, after fan-out)
+### 2c. Synthesis (module 3, sequential, after fan-out)
 
-Invoke the **`arr-module-04-pain-points`** skill with **all 9 module
+Invoke the **`arr-module-03-pain-points`** skill with **all 9 module
 outputs** as context. It produces the `Possible Pain Points` bullet
 section (v3.0.0 layout: intro line + one bullet per pain + tag bullet)
 and the `Pain Point Tags` multi-select values.
 
-Module 4 is synthesis, not search — don't spawn a research subagent.
+Module 3 is synthesis, not search — don't spawn a research subagent.
 Run it as a Skill call inside the orchestrator.
 
 ### 2d. Assemble + write (the `arr-writeback` skill)
 
 Invoke the **`arr-writeback`** skill with: the account page ID, all 10
-module outputs (1, 3, 4, 5, 6, 7, 9, 10, 12, 13, 14), the `--label`
+module outputs (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11), the `--label`
 flag, and `--dry-run`. The skill handles:
 
 1. Computing `Research Confidence` + `Research Status` from per-module
@@ -270,7 +270,7 @@ leaves stale tags, so always include them):
 - **No paid third-party APIs by default.** Tavily / Apify / jobspy /
   Greenhouse ATS are all replaced with `WebSearch` + `WebFetch`. (If
   Greenhouse is reachable via WebFetch for a given company, use it —
-  it's free and canonical for module 14 — but don't gate the pipeline
+  it's free and canonical for module 11 — but don't gate the pipeline
   on it.)
 - **No cross-account parallelism.** Within an account, modules fan out
   via subagents. Across accounts, run sequentially.

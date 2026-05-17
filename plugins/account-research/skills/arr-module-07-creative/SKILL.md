@@ -1,10 +1,10 @@
 ---
-name: arr-module-09-creative
-description: Module 9 of the Account Research Agent. Profiles the company's creative posture — verbatim JD pain phrases mined from job descriptions plus named agency relationships — and produces the Creative Posture paragraph. Loaded by per-account research subagents inside /arr.
+name: arr-module-07-creative
+description: Module 7 of the Account Research Agent. Profiles the company's creative posture — verbatim JD pain phrases mined from job descriptions plus named agency relationships — and produces the Creative Posture paragraph. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 9 — Creative Reality (Lite)
+# Module 7 — Creative Reality (Lite)
 
 ## Purpose
 

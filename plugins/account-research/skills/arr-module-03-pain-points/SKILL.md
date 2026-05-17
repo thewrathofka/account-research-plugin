@@ -1,9 +1,9 @@
 ---
-name: arr-module-04-pain-points
-description: Module 4 of the Account Research Agent. Pure synthesis (no tools) — reads the outputs of modules 1, 3, 5, 6, 7, 9, 10, 12, 13, 14 and produces the Possible Pain Points section (intro + per-pain bullets + Pain Point Tags). Loaded directly by the /arr orchestrator after research fan-out.
+name: arr-module-03-pain-points
+description: Module 3 of the Account Research Agent. Pure synthesis (no tools) — reads the outputs of modules 1, 2, 4, 5, 6, 7, 8, 9, 10, 11 and produces the Possible Pain Points section (intro + per-pain bullets + Pain Point Tags). Loaded directly by the /arr orchestrator after research fan-out.
 ---
 
-# Module 4 — Strategic Narrative + Pain Tags
+# Module 3 — Strategic Narrative + Pain Tags
 
 ## Purpose
 
@@ -15,15 +15,15 @@ This is pure synthesis. **No tools.** All input must already be in the context p
 
 The orchestrator passes:
 - `module_01_gate` — `regions_present`, size
-- `module_03_revenue_model` — revenue model, customer segment, products
-- `module_05_corporate_structure` — parent / child / standalone
-- `module_06_structural_news` — recent structural event (if any)
-- `module_07_trigger_events` — funding / rebrand / agency switch / AI initiative
-- `module_09_creative_reality` — JD pain phrases + agencies
-- `module_10_ad_library` — per-platform volume + audience classification
-- `module_12_competitor_snapshot` — top 3 competitors + differentiators
-- `module_13_industry_pulse` — category stories
-- `module_14_hiring_signal` — headcount summary, important roles, layoffs
+- `module_02_revenue_model` — revenue model, customer segment, products
+- `module_04_corporate_structure` — parent / child / standalone
+- `module_05_structural_news` — recent structural event (if any)
+- `module_06_trigger_events` — funding / rebrand / agency switch / AI initiative
+- `module_07_creative_reality` — JD pain phrases + agencies
+- `module_08_ad_library` — per-platform volume + audience classification
+- `module_09_competitor_snapshot` — top 3 competitors + differentiators
+- `module_10_industry_pulse` — category stories
+- `module_11_hiring_signal` — headcount summary, important roles, layoffs
 - `raw_research` (optional) — free text from upstream research_pass if available
 
 ## Output layout (v3.0.0)
@@ -54,7 +54,7 @@ Use only these exact strings:
 ## Hard rules
 
 - DO NOT write in cold-email voice (`"I noticed that you..."` / `"What if you..."`). This is an internal analyst note.
-- DO NOT cite upstream module names (`"module_14 says..."`). The BDR doesn't care about plumbing.
+- DO NOT cite upstream module names (`"module_11 says..."`). The BDR doesn't care about plumbing.
 - DO NOT mechanically infer pain from raw signal counts (`"they have 24 ads therefore production bottleneck"`). Tie pains to *what the company is trying to do strategically* — ads are downstream symptoms.
 - DO NOT hedge with generic creative-needs filler. If the inputs don't support a specific named pain, OMIT it. Fewer better pains beats more vague pains.
 - DO NOT repeat the same pain twice with different labels.

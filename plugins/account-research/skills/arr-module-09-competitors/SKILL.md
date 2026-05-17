@@ -1,10 +1,10 @@
 ---
-name: arr-module-12-competitors
-description: Module 12 of the Account Research Agent. Identifies the top 3 direct competitors with a one-line marketing differentiator each; produces the Competitor Landscape bullets. Loaded by per-account research subagents inside /arr.
+name: arr-module-09-competitors
+description: Module 9 of the Account Research Agent. Identifies the top 3 direct competitors with a one-line marketing differentiator each; produces the Competitor Landscape bullets. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 12 — Competitor Snapshot
+# Module 9 — Competitor Snapshot
 
 ## Purpose
 
@@ -13,7 +13,7 @@ Identify the top 3 **direct** competitors and a one-line marketing differentiato
 ## Inputs
 
 - `account_name`
-- Customer segment / product hints from module 3 (use these to scope "direct competitor" rather than tangential adjacency)
+- Customer segment / product hints from module 2 (use these to scope "direct competitor" rather than tangential adjacency)
 
 ## Searches to run
 

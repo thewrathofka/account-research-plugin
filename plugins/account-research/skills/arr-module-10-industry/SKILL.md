@@ -1,10 +1,10 @@
 ---
-name: arr-module-13-industry
-description: Module 13 of the Account Research Agent. Surfaces 2-3 last-90-day category-level stories that pass a Superside-relevance filter; appends to Competitor Landscape and may add `industry movement` to Buying Signals. Loaded by per-account research subagents inside /arr.
+name: arr-module-10-industry
+description: Module 10 of the Account Research Agent. Surfaces 2-3 last-90-day category-level stories that pass a Superside-relevance filter; appends to Competitor Landscape and may add `industry movement` to Buying Signals. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 13 — Industry Pulse
+# Module 10 — Industry Pulse
 
 ## Purpose
 

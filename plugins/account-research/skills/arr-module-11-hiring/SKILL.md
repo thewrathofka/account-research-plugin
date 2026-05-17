@@ -1,10 +1,10 @@
 ---
-name: arr-module-14-hiring
-description: Module 14 of the Account Research Agent. Counts open roles + classifies important marketing/AI/creative roles into tiers; applies location-aware in-scope (UK+EU+NA) gating for the `hiring` Buying Signal; surfaces layoff news for `downsizing`. Loaded by per-account research subagents inside /arr.
+name: arr-module-11-hiring
+description: Module 11 of the Account Research Agent. Counts open roles + classifies important marketing/AI/creative roles into tiers; applies location-aware in-scope (UK+EU+NA) gating for the `hiring` Buying Signal; surfaces layoff news for `downsizing`. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 14 — Hiring / Downsizing Signal
+# Module 11 — Hiring / Downsizing Signal
 
 ## Purpose
 

@@ -1,6 +1,6 @@
 # account-research
 
-> Claude Code plugin — 14-module B2B account research pipeline for the Notion All Accounts CRM. Native Claude Code orchestration: slash command → parallel module subagents → unified writeback. Mirrors the output contract of the Python source-of-truth at `~/code/account-research-agent/`.
+> Claude Code plugin — 11-module B2B account research pipeline for the Notion All Accounts CRM. Native Claude Code orchestration: slash command → parallel module subagents → unified writeback. Mirrors the output contract of the Python source-of-truth at `~/code/account-research-agent/`.
 
 ---
 
@@ -83,17 +83,17 @@ Default filters: `--rep Katarina`, `--priority "Priority A"`, `--since 30` (days
       ├─► arr-module-01-gate      (GATE — EU/NA presence check; blocks if fail)
       │
       ├─►  Parallel fan-out:
-      │       ├─► arr-module-03-revenue
-      │       ├─► arr-module-05-corporate
-      │       ├─► arr-module-06-structural-news
-      │       ├─► arr-module-07-triggers
-      │       ├─► arr-module-09-creative
-      │       ├─► arr-module-10-ads
-      │       ├─► arr-module-12-competitors
-      │       ├─► arr-module-13-industry
-      │       └─► arr-module-14-hiring
+      │       ├─► arr-module-02-revenue
+      │       ├─► arr-module-04-corporate
+      │       ├─► arr-module-05-structural-news
+      │       ├─► arr-module-06-triggers
+      │       ├─► arr-module-07-creative
+      │       ├─► arr-module-08-ads
+      │       ├─► arr-module-09-competitors
+      │       ├─► arr-module-10-industry
+      │       └─► arr-module-11-hiring
       │
-      ├─► arr-module-04-pain-points  (synthesis — reads all 9 module outputs)
+      ├─► arr-module-03-pain-points  (synthesis — reads all 9 module outputs)
       │
       ├─► arr-page-assembly       (pure logic — builds Notion block payloads)
       │
@@ -114,16 +114,16 @@ Default filters: `--rep Katarina`, `--priority "Priority A"`, `--since 30` (days
 | arr-batch-lister | | | ✓ | | | | |
 | arr-disambiguator | ✓ | | | | | | |
 | arr-module-01-gate | ✓ | ✓ | | | | | |
-| arr-module-03-revenue | ✓ | ✓ | | | | | |
-| arr-module-04-pain-points | (synthesis — no tools) | | | | | | |
-| arr-module-05-corporate | ✓ | ✓ | | | | | |
-| arr-module-06-structural-news | ✓ | ✓ | | | | | |
-| arr-module-07-triggers | ✓ | ✓ | | | | | |
-| arr-module-09-creative | ✓ | ✓ | | | | | |
-| arr-module-10-ads | ✓ | ✓ | | | | | |
-| arr-module-12-competitors | ✓ | ✓ | | | | | |
-| arr-module-13-industry | ✓ | ✓ | | | | | |
-| arr-module-14-hiring | ✓ | ✓ | | | | | |
+| arr-module-02-revenue | ✓ | ✓ | | | | | |
+| arr-module-03-pain-points | (synthesis — no tools) | | | | | | |
+| arr-module-04-corporate | ✓ | ✓ | | | | | |
+| arr-module-05-structural-news | ✓ | ✓ | | | | | |
+| arr-module-06-triggers | ✓ | ✓ | | | | | |
+| arr-module-07-creative | ✓ | ✓ | | | | | |
+| arr-module-08-ads | ✓ | ✓ | | | | | |
+| arr-module-09-competitors | ✓ | ✓ | | | | | |
+| arr-module-10-industry | ✓ | ✓ | | | | | |
+| arr-module-11-hiring | ✓ | ✓ | | | | | |
 | arr-page-assembly | (pure logic — no tools) | | | | | | |
 | arr-writeback | | ✓ | | | ✓ | ✓ | ✓ |
 | arr-format-verifier | | | | | ✓ | | |
@@ -137,11 +137,11 @@ Default filters: `--rep Katarina`, `--priority "Priority A"`, `--since 30` (days
 | Property | Type | Module | Notes |
 |---|---|---|---|
 | `Size` | select | 1 | `<1000` / `1000-2000` / `2000-5000` / `5000+` (deterministic from employee count integer) |
-| `Buying Signals` | multi-select | 7+13+14 | overwrite semantics — every run sets the full list including empty |
-| `Pain Point Tags` | multi-select | 4 | overwrite semantics |
-| `Structure Notes` | text | 6 | constrained vocabulary |
-| `sister/child` | text | 5 | comma-separated sibling/child brand names |
-| `Parent` | text | 5 | parent name; or own name if standalone-with-children; or empty |
+| `Buying Signals` | multi-select | 6+10+11 | overwrite semantics — every run sets the full list including empty |
+| `Pain Point Tags` | multi-select | 3 | overwrite semantics |
+| `Structure Notes` | text | 5 | constrained vocabulary |
+| `sister/child` | text | 4 | comma-separated sibling/child brand names |
+| `Parent` | text | 4 | parent name; or own name if standalone-with-children; or empty |
 | `Needs Attention` | multi-select | event detection | **append-only** — humans clear it |
 | `date:Last Researched:start` | date | always | today |
 | `Research Confidence` | select | always | `high` / `medium` / `low` / `failed` |
@@ -180,7 +180,7 @@ These are the failure modes observed across 100 batch runs in May 2026. Each is 
 | **A** | Properties writeback skipped (body written, properties empty) | `arr-format-verifier` post-write re-fetch catches and re-dispatches |
 | **B** | Body format drift (non-canonical section structure) | `arr-format-verifier` validates section names against canonical list |
 | **C** | Agent writes to human-managed `Prospecting Status` | Explicit forbid in `arr-writeback` hard rules + verifier flag |
-| **D** | Parent / sister-child field swap | `arr-module-05-corporate` decision tree + verifier swap-detection |
+| **D** | Parent / sister-child field swap | `arr-module-04-corporate` decision tree + verifier swap-detection |
 | **E** | Stream idle timeout / partial response | Verifier catches it after the fact — partial writes still get repaired |
 | **F** | Child accounts flagged as duplicates | (Document in module 5; orchestrator decision tree) |
 | **G** | WebFetch denied silent fallback | Each module skill documents its fallback chain |
@@ -200,17 +200,17 @@ account-research/
 │   └── arr.md                             ← orchestrator
 ├── skills/
 │   ├── arr-disambiguator/                 ← pre-dispatch resolver
-│   ├── arr-module-01-gate/                ← 14-module pipeline starts here
-│   ├── arr-module-03-revenue/
-│   ├── arr-module-04-pain-points/         ← synthesis (no tools)
-│   ├── arr-module-05-corporate/
-│   ├── arr-module-06-structural-news/
-│   ├── arr-module-07-triggers/
-│   ├── arr-module-09-creative/
-│   ├── arr-module-10-ads/
-│   ├── arr-module-12-competitors/
-│   ├── arr-module-13-industry/
-│   ├── arr-module-14-hiring/
+│   ├── arr-module-01-gate/                ← 11-module pipeline starts here
+│   ├── arr-module-02-revenue/
+│   ├── arr-module-03-pain-points/         ← synthesis (no tools)
+│   ├── arr-module-04-corporate/
+│   ├── arr-module-05-structural-news/
+│   ├── arr-module-06-triggers/
+│   ├── arr-module-07-creative/
+│   ├── arr-module-08-ads/
+│   ├── arr-module-09-competitors/
+│   ├── arr-module-10-industry/
+│   ├── arr-module-11-hiring/
 │   ├── arr-page-assembly/                 ← pure block-builder (no tools)
 │   ├── arr-writeback/                     ← single Notion write chokepoint
 │   └── arr-format-verifier/               ← post-write QA
@@ -228,7 +228,7 @@ When this plugin's spec disagrees with the Python project's `CLAUDE.md`, the Pyt
 - Project state + history: `~/code/account-research-agent/CLAUDE.md`
 - Module/property catalogue: `~/code/account-research-agent/INVENTORY.md`
 - Schema constants: `~/code/account-research-agent/crm.py` (lines 52–84)
-- Parent/sister decision tree: `~/code/account-research-agent/tasks/module_05.py` (lines 22–48)
+- Parent/sister decision tree: `~/code/account-research-agent/tasks/module_04.py` (lines 22–48)
 - Section order: `~/code/account-research-agent/orchestrator.py` (lines 499–514)
 
 ---
@@ -237,7 +237,7 @@ When this plugin's spec disagrees with the Python project's `CLAUDE.md`, the Pyt
 
 - **No scheduled runs.** No GHA, no cron, no `/schedule` registration. Only fires on `/arr`.
 - **No cost tracking.** No `--cost-summary`, no SQLite log, no per-call accounting. The Python project tracks that.
-- **No paid third-party APIs by default.** Tavily / Apify / jobspy / Greenhouse ATS are replaced with `WebSearch` + `WebFetch`. (Greenhouse via WebFetch is fine when reachable — it's free and canonical for module 14 — but not gated on.)
+- **No paid third-party APIs by default.** Tavily / Apify / jobspy / Greenhouse ATS are replaced with `WebSearch` + `WebFetch`. (Greenhouse via WebFetch is fine when reachable — it's free and canonical for module 11 — but not gated on.)
 - **No cross-account parallelism.** Within an account, modules fan out via subagents. Across accounts, run sequentially. (Notion rate limits + the cost of debugging interleaved output isn't worth it for personal use.)
 
 ---
@@ -247,7 +247,7 @@ When this plugin's spec disagrees with the Python project's `CLAUDE.md`, the Pyt
 1. **Stream idle timeouts.** Background subagents can stall after ~5 minutes when running many WebSearches in series. `arr-format-verifier` catches the resulting partial writes after the fact, but per-subagent budgeting (≤8 searches) is still important.
 2. **Laptop sleep kills in-flight subagents.** No way to fix from inside Claude Code. Verifier catches it on next-run resume.
 3. **MCP pagination.** The `notion-query-database-view` tool caps at 100 results with no cursor passthrough. ✅ **Resolved in v1.2.0** via the `arr-batch-lister` skill (Bash + curl + Notion REST API with cursor loop). The MCP path stays available as a fallback when the All Accounts DB hasn't been shared with the Claude Code integration yet.
-4. **WebFetch denied on /careers.** Many corporate careers pages (Workday/Greenhouse JS) block automation. Module 14's skill documents the fallback chain (LinkedIn Jobs → Glassdoor → Indeed).
+4. **WebFetch denied on /careers.** Many corporate careers pages (Workday/Greenhouse JS) block automation. Module 11's skill documents the fallback chain (LinkedIn Jobs → Glassdoor → Indeed).
 
 ---
 
@@ -258,9 +258,10 @@ When this plugin's spec disagrees with the Python project's `CLAUDE.md`, the Pyt
 | 1.0.0 | 2026-05-13 | Initial scaffold (11 module skills + arr-page-assembly + arr-writeback) |
 | 1.1.0 | 2026-05-15 | Added `arr-format-verifier` + `arr-disambiguator` skills. Wired both into orchestrator. Explicit Prospecting Status forbid in arr-writeback. README + smoke test added. Plugin renamed `account-research-agent` → `account-research`. |
 | 1.2.0 | 2026-05-15 | Added `arr-batch-lister` skill with native Notion API cursor pagination (Bash + curl). No more 100-result cap on batch mode. Orchestrator updated to call batch-lister first, falls back to MCP view query on 404. README install instructions updated to recommend sharing the All Accounts DB with the Claude Code integration. |
+| 1.3.0 | 2026-05-17 | Renumber all skills to mirror the Python project's sequential 1–11 module numbering (drops gaps at slots 02/08/11 left behind by the abandoned M2 persona-gate plan). Old skill names `arr-module-{03,04,05,06,07,09,10,12,13,14}-*` renamed to `arr-module-{02,03,04,05,06,07,08,09,10,11}-*`. SKILL.md frontmatter, body refs, commands/arr.md, READMEs, smoke-test all updated. |
 
 ---
 
 ## License
 
-Private. Shared with team only.
+Solo project, public for visibility. No external contributions accepted.

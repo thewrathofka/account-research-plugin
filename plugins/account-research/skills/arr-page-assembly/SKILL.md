@@ -15,32 +15,32 @@ This skill performs no I/O. It is logic-only. `arr-writeback` invokes it to comp
 
 A dictionary keyed by module name:
 - `module_01_gate`
-- `module_03_revenue_model`
-- `module_04_pain_points`
-- `module_05_corporate_structure`
-- `module_06_structural_news`
-- `module_07_trigger_events`
-- `module_09_creative_reality`
-- `module_10_ad_library`
-- `module_12_competitor_snapshot`
-- `module_13_industry_pulse`
-- `module_14_hiring_signal`
+- `module_02_revenue_model`
+- `module_03_pain_points`
+- `module_04_corporate_structure`
+- `module_05_structural_news`
+- `module_06_trigger_events`
+- `module_07_creative_reality`
+- `module_08_ad_library`
+- `module_09_competitor_snapshot`
+- `module_10_industry_pulse`
+- `module_11_hiring_signal`
 
-Any of modules 3–14 may be `null` or `{"error": ...}` if its subagent failed — assembly must skip those sections rather than crash.
+Any of modules 2–11 may be `null` or `{"error": ...}` if its subagent failed — assembly must skip those sections rather than crash.
 
 ## Canonical page-body section order
 
 Emit blocks in this order. Skip any section whose source module is missing/null.
 
-1. **Overview** (heading_2) — from module 3 `summary`
-2. **Headcount** (heading_3 nested intent, but Notion API treats it as a sibling block; emit as heading_3) — from module 14 `headcount_summary`
-3. **Possible Pain Points** (heading_2) — from module 4 `intro` paragraph + one `bulleted_list_item` per `pain_points[i]` (rendered as `**{label}** — {body}`) + one final tag bullet `Tags: {comma-joined tags}`
-4. **News** (heading_2) — module 7 trigger bullets, then per-signal subheadings as `heading_3` for each detected signal grouping (e.g. `### funding round` followed by its `trigger_details` bullet; `### industry movement` followed by module 13 stories that have `buying_implication="industry movement"`; `### hiring` / `### downsizing` from module 14 + module 6 if applicable)
-5. **Creative Posture** (heading_2) — from module 9 `creative_posture_summary`
-6. **Ads Running** (heading_3) — one `bulleted_list_item` per platform from module 10: `**{platform}** — {ads_running} active ({volume}). {note}`
-7. **Competitor Landscape** (heading_2) — module 12 competitor bullets, then module 13 story bullets appended
+1. **Overview** (heading_2) — from module 2 `summary`
+2. **Headcount** (heading_3 nested intent, but Notion API treats it as a sibling block; emit as heading_3) — from module 11 `headcount_summary`
+3. **Possible Pain Points** (heading_2) — from module 3 `intro` paragraph + one `bulleted_list_item` per `pain_points[i]` (rendered as `**{label}** — {body}`) + one final tag bullet `Tags: {comma-joined tags}`
+4. **News** (heading_2) — module 6 trigger bullets, then per-signal subheadings as `heading_3` for each detected signal grouping (e.g. `### funding round` followed by its `trigger_details` bullet; `### industry movement` followed by module 10 stories that have `buying_implication="industry movement"`; `### hiring` / `### downsizing` from module 11 + module 5 if applicable)
+5. **Creative Posture** (heading_2) — from module 7 `creative_posture_summary`
+6. **Ads Running** (heading_3) — one `bulleted_list_item` per platform from module 8: `**{platform}** — {ads_running} active ({volume}). {note}`
+7. **Competitor Landscape** (heading_2) — module 9 competitor bullets, then module 10 story bullets appended
 
-Module 5's outputs go to Notion properties only (no page-body block here). Module 6's `event_summary` is rendered inline under the appropriate News subheading if present.
+Module 4's outputs go to Notion properties only (no page-body block here). Module 5's `event_summary` is rendered inline under the appropriate News subheading if present.
 
 ## Per-section citation renumbering
 
@@ -78,7 +78,7 @@ Use these Notion block types:
 
 - `heading_2` — top-level section headers (Overview, Possible Pain Points, News, Creative Posture, Competitor Landscape)
 - `heading_3` — subsection headers (Headcount, Ads Running, per-signal subheadings under News)
-- `paragraph` — narrative summaries (module 3, module 9, module 14 headcount, module 4 intro, module 6 event_summary)
+- `paragraph` — narrative summaries (module 2, module 7, module 11 headcount, module 3 intro, module 5 event_summary)
 - `bulleted_list_item` — pain bullets, trigger bullets, ad-platform bullets, competitor bullets, industry stories
 
 Each block payload is:
@@ -94,8 +94,8 @@ Each block payload is:
 ## Empty-section policy
 
 - If a module is missing/null/errored → skip the section. Don't emit an empty heading.
-- If module 7's `triggers_detected=[]` AND module 13's `stories=[]` AND module 14's signal is null AND module 6 produced no `event_summary` → omit the **News** heading entirely.
-- If module 10's three platforms are all `ads_running=0` and all "not applicable" → emit the heading but with a single bullet `No active ad library presence detected.`
+- If module 6's `triggers_detected=[]` AND module 10's `stories=[]` AND module 11's signal is null AND module 5 produced no `event_summary` → omit the **News** heading entirely.
+- If module 8's three platforms are all `ads_running=0` and all "not applicable" → emit the heading but with a single bullet `No active ad library presence detected.`
 
 ## Output
 
@@ -109,21 +109,21 @@ Return a tuple `(blocks, properties_hints)`:
 Inputs (simplified):
 
 ```
-module_07.trigger_details[0].summary = "Raised $50M Series C led by Sequoia [1]."
-module_07.citations = [{"n": 1, "title": "tc.com — Series C", "url": "https://tc.com/x"}]
+module_06.trigger_details[0].summary = "Raised $50M Series C led by Sequoia [1]."
+module_06.citations = [{"n": 1, "title": "tc.com — Series C", "url": "https://tc.com/x"}]
 
-module_13.stories[0].headline = "Sector M&A spike in Q1 2026 [1]"
-module_13.citations = [{"n": 1, "title": "rb.com — Q1 M&A spike", "url": "https://rb.com/y"}]
+module_10.stories[0].headline = "Sector M&A spike in Q1 2026 [1]"
+module_10.citations = [{"n": 1, "title": "rb.com — Q1 M&A spike", "url": "https://rb.com/y"}]
 ```
 
-After renumbering per the News section (display order: module 7 → module 13):
+After renumbering per the News section (display order: module 6 → module 10):
 
 ```
 [1] → "Raised $50M Series C led by Sequoia [1]." → https://tc.com/x
 [2] → "Sector M&A spike in Q1 2026 [2]" → https://rb.com/y
 ```
 
-If module 13 had cited `https://tc.com/x` (same URL as module 7), the dedupe collapses both `[N]` markers in that section into the same new `[1]`.
+If module 10 had cited `https://tc.com/x` (same URL as module 6), the dedupe collapses both `[N]` markers in that section into the same new `[1]`.
 
 ## Hard rules
 

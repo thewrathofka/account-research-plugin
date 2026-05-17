@@ -1,10 +1,10 @@
 ---
-name: arr-module-10-ads
-description: Module 10 of the Account Research Agent. Best-effort ad library lookup (LinkedIn always; Meta gated by B2C/DTC/hybrid; TikTok gated by Gen-Z/lifestyle) via WebFetch — no Apify in the Claude Code rewrite. Produces Ads Running bullets under Creative Posture. Loaded by per-account research subagents inside /arr.
+name: arr-module-08-ads
+description: Module 8 of the Account Research Agent. Best-effort ad library lookup (LinkedIn always; Meta gated by B2C/DTC/hybrid; TikTok gated by Gen-Z/lifestyle) via WebFetch — no Apify in the Claude Code rewrite. Produces Ads Running bullets under Creative Posture. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 10 — Ad Library (Best Effort via WebFetch)
+# Module 8 — Ad Library (Best Effort via WebFetch)
 
 ## Purpose
 

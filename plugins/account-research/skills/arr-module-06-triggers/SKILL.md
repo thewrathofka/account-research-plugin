@@ -1,10 +1,10 @@
 ---
-name: arr-module-07-triggers
-description: Module 7 of the Account Research Agent. Detects last-90-day buying-signal triggers (funding round / active creative jobs / rebrand or campaign / agency switch / AI initiative) and produces the News-section trigger context. Loaded by per-account research subagents inside /arr.
+name: arr-module-06-triggers
+description: Module 6 of the Account Research Agent. Detects last-90-day buying-signal triggers (funding round / active creative jobs / rebrand or campaign / agency switch / AI initiative) and produces the News-section trigger context. Loaded by per-account research subagents inside /arr.
 allowed-tools: WebSearch, WebFetch
 ---
 
-# Module 7 — Trigger Events (Last 90 Days)
+# Module 6 — Trigger Events (Last 90 Days)
 
 ## Purpose
 
@@ -47,7 +47,7 @@ If nothing qualifies, return `triggers_detected=[]` with `confidence=low`. Do no
 
 **Do NOT include** `new marketing/brand/creative leader` — excluded from MVP.
 
-`active creative jobs` is set ONLY for a press release or notable hiring announcement (e.g. *"company announces 50-person creative team buildout"*). Routine job listings belong to module 14, not 7.
+`active creative jobs` is set ONLY for a press release or notable hiring announcement (e.g. *"company announces 50-person creative team buildout"*). Routine job listings belong to module 11, not 6.
 
 ## Hard rules
 

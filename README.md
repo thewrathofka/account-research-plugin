@@ -42,16 +42,16 @@ account-research-plugin/                ← THIS DIR (a marketplace)
         │   ├── arr-disambiguator/
         │   ├── arr-format-verifier/
         │   ├── arr-module-01-gate/
-        │   ├── arr-module-03-revenue/
-        │   ├── arr-module-04-pain-points/
-        │   ├── arr-module-05-corporate/
-        │   ├── arr-module-06-structural-news/
-        │   ├── arr-module-07-triggers/
-        │   ├── arr-module-09-creative/
-        │   ├── arr-module-10-ads/
-        │   ├── arr-module-12-competitors/
-        │   ├── arr-module-13-industry/
-        │   ├── arr-module-14-hiring/
+        │   ├── arr-module-02-revenue/
+        │   ├── arr-module-03-pain-points/
+        │   ├── arr-module-04-corporate/
+        │   ├── arr-module-05-structural-news/
+        │   ├── arr-module-06-triggers/
+        │   ├── arr-module-07-creative/
+        │   ├── arr-module-08-ads/
+        │   ├── arr-module-09-competitors/
+        │   ├── arr-module-10-industry/
+        │   ├── arr-module-11-hiring/
         │   ├── arr-page-assembly/
         │   └── arr-writeback/
         └── tests/smoke-test.md
@@ -63,4 +63,4 @@ Edit files under `plugins/account-research/` and commit. Claude Code re-reads th
 
 ## License
 
-Private. Shared with team only.
+Solo project, public for visibility. No external contributions accepted.
