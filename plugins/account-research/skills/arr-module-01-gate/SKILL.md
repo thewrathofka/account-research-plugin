@@ -118,6 +118,6 @@ Output a single JSON object inside a ```json fenced block. Required fields:
 
 ## Confidence rubric
 
-- `high` — multiple authoritative sources agree on size + region.
-- `medium` — sparse or mixed signals; one strong source only.
-- `low` — you had to guess; mark and let the orchestrator route to `needs_review`.
+- `high` — TWO OR MORE authoritative sources (SEC filings, company website, LinkedIn company page, established business press) agree on BOTH the employee count band AND at least one in-scope region.
+- `medium` — sources agree on regions OR size but conflict / are sparse on the other dimension; OR only one authoritative source.
+- `low` — single non-authoritative source, training-data guess, or only "global / international" claims without country-named offices. Setting confidence=low here routes the account to `needs_review` — don't use to dodge a hard call.

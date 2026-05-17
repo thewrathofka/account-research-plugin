@@ -1,7 +1,7 @@
 {
   "name": "account-research",
   "description": "On-demand account research for the Notion All Accounts CRM. Runs the 11-module pipeline natively in Claude Code (WebSearch + WebFetch + Notion MCP). Triggered only by /arr — no scheduled runs. Mirrors the output contract of the Python source-of-truth at ~/code/account-research-agent/.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": {
     "name": "Kali"
   }

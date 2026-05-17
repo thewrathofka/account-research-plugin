@@ -146,8 +146,8 @@ If nothing qualifies, return `triggers_detected=[]` with `confidence=low`. Do no
 
 ## Confidence rubric
 
-- `high` — multiple triggers with hard dates and primary-source URLs.
-- `medium` — one trigger with a credible single source.
-- `low` — nothing within 90 days, or only weakly-dated candidates.
+- `high` — multiple triggers detected, each with a hard absolute date inside the 90-day cutoff AND a primary-source URL (company press release, SEC filing, named outlet).
+- `medium` — one trigger with a credible single source AND a verifiable date; OR multiple triggers but some have only secondary-source coverage.
+- `low` — nothing within 90 days, OR only weakly-dated candidates ("in early 2026", "recently"). Honest zero-trigger output beats a padded list.
 
 The orchestrator-side `arr-writeback` skill appends `triggers_detected` to the Notion `Buying Signals` multi-select and renders each `trigger_details.summary` as a bullet under the News section.

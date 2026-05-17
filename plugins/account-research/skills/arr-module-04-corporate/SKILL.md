@@ -117,10 +117,16 @@ For the Notion `Parent` field:
 }
 ```
 
+## Ambiguity rules
+
+- **In-flight acquisitions (announced but not closed):** treat the company as its PRE-deal structure until the deal closes. "Announced to be acquired by X" does NOT make this company a subsidiary yet — leave `structure_type` at "standalone" (or whatever it was) and let module 5 (structural news) handle the pending deal's timing.
+- **Mergers of equals:** pick the surviving brand as the parent if one was retained; if a new combined brand was formed, set `structure_type="subsidiary"` with `parent_company` = the new combined brand. Surface the ambiguity in your citation evidence.
+- **Spin-offs in progress:** classify by the company's CURRENT operational state, not the announced future state. A division "to be spun off" is still a subsidiary today.
+
 ## Confidence rubric
 
-- `high` — corroborating sources (filing, press release, Wikipedia).
-- `medium` — one credible source; ownership recent or messy.
-- `low` — only inference; mark and let writeback route to `needs_review`.
+- `high` — primary source (SEC 10-K, official acquisition press release, company "About" page that names the parent) confirms the structure unambiguously.
+- `medium` — secondary coverage (TechCrunch, Reuters, Wikipedia) describes the structure consistently across multiple stories; older but not contradicted by recent sources.
+- `low` — structure inferred from name similarity, industry adjacency, or a single ambiguous source. Use sparingly — the Notion `Parent` property is human-readable so a wrong guess is worse than null.
 
 The orchestrator-side `arr-writeback` skill writes `parent_company` to the Notion `Parent` text property (applying the self-name rule from `structure_type`) and joins `notable_sister_or_child_brands` into the `sister/child` text property.

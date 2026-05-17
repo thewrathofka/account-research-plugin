@@ -88,8 +88,8 @@ Use `WebSearch` 2–4 times. Decompose the question — ask separately for each 
 
 ## Confidence rubric
 
-- `high` — pricing page + at least one third-party source confirm model and customer segment.
-- `medium` — only one credible source; segment is inferred.
-- `low` — private company with unclear model; or sparse hits.
+- `high` — revenue model explicitly stated in earnings reports, investor pages, pricing pages, or major business-press coverage; primary products and customer segment both confirmed by primary sources.
+- `medium` — revenue model inferred from product/customer pattern (SaaS playbook, marketplace economics); some products listed but list may be incomplete.
+- `low` — private company with no public revenue disclosure; model assumed from category convention rather than confirmed.
 
 The orchestrator-side `arr-writeback` skill renders `summary` as the **Overview** paragraph, rewriting `[N]` markers into inline Notion `rich_text` link spans.
