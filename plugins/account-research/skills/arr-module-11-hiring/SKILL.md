@@ -214,8 +214,8 @@ If the company has many global marketing/creative roles but FEWER than 3 in UK/E
 
 ## Confidence rubric
 
-- `high` — Greenhouse total + clean per-role locations + corroborated layoff status.
-- `medium` — fallback to LinkedIn/careers page (totals approximate).
-- `low` — no fetchable jobs page; layoff status unverified.
+- `high` — Greenhouse (or other ATS) fetch succeeded with canonical role count AND per-role locations clearly classified as in-scope (UK + EU + NA) vs out-of-scope; layoff status either corroborated by named source OR clearly absent across multiple search passes.
+- `medium` — fallback to LinkedIn / careers page totals (approximate, no per-role location detail); OR ATS worked but layoff status indeterminate (some hiring + ambiguous restructuring news in the same window).
+- `low` — no fetchable jobs page anywhere; OR signal direction (hiring vs downsizing) is genuinely indeterminate (similar magnitudes of both in the recent window). Don't guess — set low and let the orchestrator route to `needs_review`.
 
 The orchestrator-side `arr-writeback` skill writes `headcount_signal` (when not null) to `Buying Signals` and renders `headcount_summary` as the **Headcount** subsection under Overview, optionally followed by bulleted important-role entries.

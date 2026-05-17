@@ -144,8 +144,8 @@ Use when the company has ceased operations entirely, filed Chapter 7 (not Chapte
 
 ## Confidence rubric
 
-- `high` — verifiable absolute date + at least one authoritative source.
-- `medium` — date approximate (month-precise only) or single source.
-- `low` — date unclear → set `structure_note=null` instead.
+- `high` — event covered by 2+ named outlets, with a clear absolute date inside the applicable cutoff (12mo for big events like M&A/IPO/bankruptcy/mass layoffs, 6mo otherwise); counterparty names verified from primary sources.
+- `medium` — single named source OR date is approximate (month-precise only) but clearly inside the cutoff; counterparty names known but not double-confirmed.
+- `low` — signal of an event but no verifiable absolute date; OR event likely just outside the cutoff window; OR counterparty ambiguous. Prefer `structure_note=null` + confidence="high" over a low-confidence half-correct claim.
 
 The orchestrator-side `arr-writeback` skill writes `structure_note` to the Notion `Structure Notes` text property and renders `event_summary` as part of the News section (when present).

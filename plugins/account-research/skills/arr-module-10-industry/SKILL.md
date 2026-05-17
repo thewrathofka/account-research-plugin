@@ -136,8 +136,8 @@ A story qualifies ONLY if it would plausibly change how (or whether) this compan
 
 ## Confidence rubric
 
-- `high` — 2–3 stories, all within window, all Superside-relevant, primary sources cited.
-- `medium` — 1 strong story only, or two with weaker dates.
-- `low` — 0 stories that pass both the window and the relevance filter.
+- `high` — 2–3 stories, all within the 90-day cutoff, each from a named outlet, each clearly Superside-relevant per the filter (category shift, buying-environment shift, or major peer event).
+- `medium` — 1 truly relevant story + at most 1 borderline; OR 2 stories but one of them stretches the Superside-relevance filter.
+- `low` — stories older than 90 days OR fail the relevance filter; OR zero stories returned (which is a valid honest output — do NOT pad with generic industry news to get to 2-3).
 
 The orchestrator-side `arr-writeback` skill renders each story as a bullet appended to **Competitor Landscape**, and adds `industry movement` to `Buying Signals` iff `industry_movement_detected=true`.

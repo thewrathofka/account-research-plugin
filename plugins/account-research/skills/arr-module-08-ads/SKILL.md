@@ -183,8 +183,8 @@ Otherwise emit a "not applicable" platform entry.
 
 ## Confidence rubric
 
-- `high` — LinkedIn fetched successfully + correct gating decisions for Meta/TikTok.
-- `medium` — LinkedIn fetched but partial data, or gating-skipped platforms only.
-- `low` — `WebFetch` blocked / no fetchable data anywhere.
+- `high` — LinkedIn ad library fetched successfully with a clear advertiser-name match AND audience classification (B2B / B2C / hybrid / Gen-Z-lifestyle) cleanly drives correct gating decisions for Meta + TikTok (i.e. they were skipped or queried per the rules with no ambiguity).
+- `medium` — LinkedIn fetched but the count is approximate (advertiser-name fuzzy match, possible namesakes); OR audience classification is borderline (e.g. enterprise SaaS that does some prosumer marketing) so Meta/TikTok gating is judgment-call rather than clear.
+- `low` — `WebFetch` blocked or returned no data on the platforms you queried; OR you couldn't classify the audience at all from the prior context. Don't invent ad counts — return `ads_running=0` with a clear "not fetchable" note.
 
 The orchestrator-side `arr-writeback` skill renders each platform as a bullet under **Creative Posture → Ads Running**: `**{platform}** — {ads_running} active ({volume}). {note}`.

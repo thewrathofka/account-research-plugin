@@ -90,8 +90,8 @@ Build a short profile of the company's *creative posture*: in-house creative rol
 
 ## Confidence rubric
 
-- `high` — multiple verbatim JD phrases AND at least one named agency confirmed.
-- `medium` — partial signal (JD phrases OR agency, not both).
-- `low` — careers page sparse, no agency mention.
+- `high` — multiple verbatim JD pain phrases captured AND at least one confirmed named agency relationship AND specific role count from a primary source (careers page or LinkedIn jobs with low-noise match).
+- `medium` — either JD pain phrases OR a named agency relationship, but not both; OR the role count is reasonable but not corroborated.
+- `low` — generic creative-needs framing with no specific JD language and no named agency. Common for companies with no public careers page or thin web presence; that's the honest read — set low and move on.
 
 The orchestrator-side `arr-writeback` skill renders `creative_posture_summary` as the **Creative Posture** paragraph on the page body and feeds `jd_pain_phrases` + `named_agencies` into module 4's synthesis context.
